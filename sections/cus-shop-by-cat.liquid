@@ -1,4 +1,5 @@
 {% assign featured = section.settings.featured_product %}
+{% assign end = featured.metafields.custom.timer_end.value | date: '%s' %}
 {% assign meta_keys = 'one,two' | split: ',' %}
 
 
@@ -219,7 +220,7 @@
 <section
   id="shop-{{ section.id }}"
   class="shop"
-  data-end="{{ section.settings.timer_end }}"
+  data-end="{{ end }}"
   style="
     --bg: {{ section.settings.background_color }};
     --text: {{ section.settings.text_color }};
@@ -306,10 +307,12 @@
 
     <div class="offer">
       <p class="offer-title">{{ section.settings.offer_text }}</p>
-      <div class="timer">
-        <span>{{ section.settings.timer_label }}</span>
-        <b data-hours>00</b>:<b data-minutes>00</b>:<b data-seconds>00</b>
-      </div>
+        {% if end != blank %}
+            <div class="timer">
+                <span>{{ section.settings.timer_label }}</span>
+                <b data-hours>00</b>:<b data-minutes>00</b>:<b data-seconds>00</b>
+            </div>
+        {% endif %}
       <p class="offer-title">{{ section.settings.offer_text_two }}</p>
       {% if featured != blank %}
         <a href="{{ featured.url }}">
@@ -355,24 +358,28 @@
     window.addEventListener('resize', updateBar);
     updateBar();
 
-    const end = new Date(root.dataset.end).getTime();
-    const hours = root.querySelector('[data-hours]');
-    const minutes = root.querySelector('[data-minutes]');
-    const seconds = root.querySelector('[data-seconds]');
+    const timer = root.querySelector('.timer');
+
+    if (timer) {
+    const end = Number(root.dataset.end) * 1000;
+    const hours = timer.querySelector('[data-hours]');
+    const minutes = timer.querySelector('[data-minutes]');
+    const seconds = timer.querySelector('[data-seconds]');
 
     function pad(value) {
-      return String(value).padStart(2, '0');
+        return String(value).padStart(2, '0');
     }
 
     function tick() {
-      const left = Math.max(0, Math.floor((end - Date.now()) / 1000));
-      hours.textContent = pad(Math.floor(left / 3600));
-      minutes.textContent = pad(Math.floor((left % 3600) / 60));
-      seconds.textContent = pad(left % 60);
+        const left = Math.max(0, Math.floor((end - Date.now()) / 1000));
+        hours.textContent = pad(Math.floor(left / 3600));
+        minutes.textContent = pad(Math.floor((left % 3600) / 60));
+        seconds.textContent = pad(left % 60);
     }
 
     tick();
     setInterval(tick, 1000);
+    }
   })();
 </script>
 
@@ -390,7 +397,6 @@
     { "type": "header", "content": "Offer card" },
     { "type": "text", "id": "offer_text", "label": "Top text", "default": "20% OFF First Subscription" },
     { "type": "text", "id": "timer_label", "label": "Timer label", "default": "Hurry, Offer Ends In:" },
-    { "type": "text", "id": "timer_end", "label": "Timer end", "info": "Format: 2026-12-31T23:59", "default": "2026-12-31T23:59" },
     { "type": "text", "id": "offer_text_two", "label": "Bottom text", "default": "20% OFF On Super Candy" },
     { "type": "product", "id": "featured_product", "label": "Featured product" },
 
