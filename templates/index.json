@@ -12,32 +12,46 @@
     "cus_shop_by_cat_f6rYPy": {
       "type": "cus-shop-by-cat",
       "blocks": {
+        "tab_QqcHkA": {
+          "type": "tab",
+          "settings": {
+            "collection": "c2"
+          }
+        },
+        "tab_9CYaTD": {
+          "type": "tab",
+          "settings": {
+            "collection": "c1"
+          }
+        },
         "tab_by9LHt": {
           "type": "tab",
           "settings": {
-            "collection": ""
+            "collection": "flower"
           }
         },
         "tab_pKVh7Y": {
           "type": "tab",
           "settings": {
-            "collection": ""
+            "collection": "pre-rolls"
           }
         },
         "tab_KGDWny": {
           "type": "tab",
           "settings": {
-            "collection": ""
+            "collection": "gummies"
           }
         },
         "tab_REUhkp": {
           "type": "tab",
           "settings": {
-            "collection": ""
+            "collection": "chocolates"
           }
         }
       },
       "block_order": [
+        "tab_QqcHkA",
+        "tab_9CYaTD",
         "tab_by9LHt",
         "tab_pKVh7Y",
         "tab_KGDWny",
