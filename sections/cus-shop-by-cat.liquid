@@ -2,221 +2,6 @@
 {% assign end = featured.metafields.custom.timer_end.value | date: '%s' %}
 {% assign meta_keys = 'one,two' | split: ',' %}
 
-
-
-{% stylesheet %}
-  .shop {
-    background: var(--bg);
-    color: var(--text);
-    padding: var(--pt-m) var(--pr-m) var(--pb-m) var(--pl-m);
-
-    .heading {
-      text-align: center;
-      margin: 0 0 12px;
-    }
-
-    .metas {
-      margin-bottom: 24px;
-    }
-
-    .meta-group {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8em;
-    }
-
-    .meta-icon {
-      width: 18px;
-      height: 18px;
-      object-fit: contain;
-    }
-
-    .slider {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .arrow {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1px solid var(--text);
-      background: transparent;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      scroll-behavior: smooth;
-      padding: 4px 0;
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
-    .tab {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-      padding: 10px 16px;
-      border: 1px solid var(--text);
-      border-radius: 8px;
-      background: transparent;
-      color: var(--text);
-      text-transform: uppercase;
-      cursor: pointer;
-
-      &.active {
-        background: var(--card);
-        color: var(--bg);
-      }
-    }
-
-    .tab-icon {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-    }
-
-    .track {
-      max-width: 800px;
-      margin: 12px auto 32px;
-    }
-
-    .bar {
-      height: 4px;
-      background: var(--text);
-      width: 100%;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 12px;
-      border-radius: 12px;
-      background: var(--card);
-      color: var(--bg);
-    }
-
-    .image {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: contain;
-    }
-
-    .title {
-      margin: 8px 0 0;
-      font-size: 1em;
-      font-weight: 400;
-    }
-
-    .price {
-      margin: 4px 0 12px;
-      font-size: 0.8em;
-      font-weight: 600;
-    }
-
-    .button {
-      margin-top: auto;
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      background: var(--bg);
-      color: var(--text);
-      text-align: center;
-      text-transform: uppercase;
-      text-decoration: none;
-      font-size: 0.8em;
-    }
-
-    .more {
-      display: table;
-      margin: 24px auto 0;
-      padding: 14px 24px;
-      border-radius: 6px;
-      background: var(--text);
-      color: var(--bg);
-      text-decoration: none;
-    }
-
-    .offer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 24px;
-      border-radius: 12px;
-      background: var(--card);
-      color: var(--bg);
-      text-align: center;
-    }
-
-    .offer-title {
-      margin: 0;
-      font-size: 1.4em;
-    }
-
-    .timer {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.8em;
-
-      b {
-        padding: 2px 6px;
-        border: 1px solid var(--bg);
-        border-radius: 4px;
-        font-weight: 400;
-      }
-    }
-
-    .offer-image {
-      max-width: 100%;
-      height: auto;
-    }
-
-    @media (min-width: 750px) {
-      padding: var(--pt-d) var(--pr-d) var(--pb-d) var(--pl-d);
-
-      .layout {
-        grid-template-columns: 1.2fr 1fr;
-      }
-    }
-  }
-{% endstylesheet %}
 <section
   id="shop-{{ section.id }}"
   class="shop"
@@ -279,7 +64,7 @@
     <button class="arrow" data-arrow="1" aria-label="Next">&rarr;</button>
   </div>
 
-  <div class="track"><div class="bar"></div></div>
+  <div class="progress"><div class="progress-bar"></div></div>
 
   <div class="layout">
     <div class="left">
@@ -307,12 +92,12 @@
 
     <div class="offer">
       <p class="offer-title">{{ section.settings.offer_text }}</p>
-        {% if end != blank %}
-            <div class="timer">
-                <span>{{ section.settings.timer_label }}</span>
-                <b data-hours>00</b>:<b data-minutes>00</b>:<b data-seconds>00</b>
-            </div>
-        {% endif %}
+      {% if end != blank %}
+        <div class="timer">
+          <span>{{ section.settings.timer_label }}</span>
+          <b data-hours>00</b>:<b data-minutes>00</b>:<b data-seconds>00</b>
+        </div>
+      {% endif %}
       <p class="offer-title">{{ section.settings.offer_text_two }}</p>
       {% if featured != blank %}
         <a href="{{ featured.url }}">
@@ -323,6 +108,231 @@
   </div>
 </section>
 
+{% stylesheet %}
+  .shop {
+    background: var(--bg);
+    color: var(--text);
+    padding: var(--pt-m) var(--pr-m) var(--pb-m) var(--pl-m);
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .heading {
+      text-align: center;
+      margin: 0 0 12px;
+    }
+
+    .metas {
+      margin-bottom: 24px;
+    }
+
+    .meta-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8em;
+    }
+
+    .meta-icon {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .slider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .arrow {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--text);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .tabs {
+      display: flex;
+      flex: 1;
+      min-width: 0;
+      gap: 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-behavior: smooth;
+      padding: 4px 0;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 0 0 calc((100% - 36px) / 4);
+      padding: 10px 8px;
+      border: 1px solid var(--text);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      text-transform: uppercase;
+      cursor: pointer;
+
+      &.active {
+        background: var(--card);
+        color: var(--bg);
+      }
+    }
+
+    .tab-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .progress {
+      box-sizing: border-box;
+      max-width: 800px;
+      margin: 12px auto 32px;
+      padding: 0 52px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      width: 100%;
+      background: var(--text);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--bg);
+    }
+
+    .image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+    }
+
+    .title {
+      margin: 8px 0 0;
+      font-size: 1em;
+      font-weight: 400;
+      color: inherit;
+    }
+
+    .price {
+      margin: 4px 0 12px;
+      font-size: 0.8em;
+      font-weight: 600;
+      color: inherit;
+    }
+
+    .button {
+      margin-top: auto;
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      text-align: center;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-size: 0.8em;
+    }
+
+    .more {
+      display: table;
+      margin: 24px auto 0;
+      padding: 14px 24px;
+      border-radius: 6px;
+      background: var(--text);
+      color: var(--bg);
+      text-decoration: none;
+    }
+
+    .offer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--bg);
+      text-align: center;
+    }
+
+    .offer-title {
+      margin: 0;
+      font-size: 1.4em;
+      color: inherit;
+    }
+
+    .timer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8em;
+
+      b {
+        padding: 2px 6px;
+        border: 1px solid var(--bg);
+        border-radius: 4px;
+        font-weight: 400;
+      }
+    }
+
+    .offer-image {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (min-width: 750px) {
+      padding: var(--pt-d) var(--pr-d) var(--pb-d) var(--pl-d);
+
+      .layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
+{% endstylesheet %}
 
 <script>
   (function () {
@@ -330,7 +340,7 @@
     const tabs = root.querySelectorAll('[data-tab]');
     const panels = root.querySelectorAll('[data-panel]');
     const list = root.querySelector('.tabs');
-    const bar = root.querySelector('.bar');
+    const bar = root.querySelector('.progress-bar');
 
     tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
@@ -361,24 +371,24 @@
     const timer = root.querySelector('.timer');
 
     if (timer) {
-    const end = Number(root.dataset.end) * 1000;
-    const hours = timer.querySelector('[data-hours]');
-    const minutes = timer.querySelector('[data-minutes]');
-    const seconds = timer.querySelector('[data-seconds]');
+      const end = Number(root.dataset.end) * 1000;
+      const hours = timer.querySelector('[data-hours]');
+      const minutes = timer.querySelector('[data-minutes]');
+      const seconds = timer.querySelector('[data-seconds]');
 
-    function pad(value) {
+      function pad(value) {
         return String(value).padStart(2, '0');
-    }
+      }
 
-    function tick() {
+      function tick() {
         const left = Math.max(0, Math.floor((end - Date.now()) / 1000));
         hours.textContent = pad(Math.floor(left / 3600));
         minutes.textContent = pad(Math.floor((left % 3600) / 60));
         seconds.textContent = pad(left % 60);
-    }
+      }
 
-    tick();
-    setInterval(tick, 1000);
+      tick();
+      setInterval(tick, 1000);
     }
   })();
 </script>
