@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "image_banner": {
@@ -29,47 +38,77 @@
       "settings": {
         "image_overlay_opacity": 40,
         "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
         "image_behavior": "none",
+        "desktop_content_position": "bottom-center",
         "desktop_content_alignment": "center",
+        "show_text_box": false,
         "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
         "show_text_below": false
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "cus_shop_by_cat_f6rYPy": {
+      "type": "cus-shop-by-cat",
+      "blocks": {
+        "tab_by9LHt": {
+          "type": "tab",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "tab_pKVh7Y": {
+          "type": "tab",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "tab_KGDWny": {
+          "type": "tab",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "tab_REUhkp": {
+          "type": "tab",
+          "settings": {
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_by9LHt",
+        "tab_pKVh7Y",
+        "tab_KGDWny",
+        "tab_REUhkp"
+      ],
+      "name": "Shop By Categories",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "heading": "Shop By Categories",
+        "products_count": 6,
+        "shop_label": "Shop Now",
+        "more_label": "Load More Products",
+        "offer_text": "20% OFF First Subscription",
+        "timer_label": "Hurry, Offer Ends In:",
+        "timer_end": "2026-12-31T23:59",
+        "offer_text_two": "20% OFF On Super Candy",
+        "featured_product": "",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "card_color": "#1e1e1e",
+        "padding_top_desktop": 60,
+        "padding_right_desktop": 40,
+        "padding_bottom_desktop": 60,
+        "padding_left_desktop": 40,
+        "padding_top_mobile": 32,
+        "padding_right_mobile": 16,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 16
       }
     }
   },
   "order": [
     "image_banner",
-    "featured_collection"
+    "cus_shop_by_cat_f6rYPy"
   ]
 }
