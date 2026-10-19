@@ -1,0 +1,186 @@
+<section
+  id="banner-{{ section.id }}"
+  class="banner"
+  style="
+    --bg: {{ section.settings.background_color }};
+    --text: {{ section.settings.text_color }};
+    --overlay-color: {{ section.settings.overlay_color }};
+    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --button-bg: {{ section.settings.button_color }};
+    --button-text: {{ section.settings.button_text_color }};
+    --max: {{ section.settings.max_width }}px;
+    --height-d: {{ section.settings.height_desktop }}px;
+    --height-m: {{ section.settings.height_mobile }}px;
+    --heading-d: {{ section.settings.heading_size_desktop }}px;
+    --heading-m: {{ section.settings.heading_size_mobile }}px;
+    --pt-d: {{ section.settings.padding_top_desktop }}px;
+    --pr-d: {{ section.settings.padding_right_desktop }}px;
+    --pb-d: {{ section.settings.padding_bottom_desktop }}px;
+    --pl-d: {{ section.settings.padding_left_desktop }}px;
+    --pt-m: {{ section.settings.padding_top_mobile }}px;
+    --pr-m: {{ section.settings.padding_right_mobile }}px;
+    --pb-m: {{ section.settings.padding_bottom_mobile }}px;
+    --pl-m: {{ section.settings.padding_left_mobile }}px;
+  "
+>
+  <div class="inner">
+    <div class="frame">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 2400 | image_tag: class: 'image', widths: '800, 1400, 2400', alt: section.settings.heading }}
+      {% endif %}
+
+      <div class="overlay"></div>
+
+      <div class="content">
+        {% if section.settings.heading != blank %}
+          <h2 class="heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <p class="text">{{ section.settings.text }}</p>
+        {% endif %}
+
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .banner {
+    background: var(--bg);
+    color: var(--text);
+    padding: var(--pt-m) var(--pr-m) var(--pb-m) var(--pl-m);
+
+    .inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .frame {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--height-m);
+      overflow: hidden;
+      background: var(--overlay-color);
+    }
+
+    .image {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--overlay-color);
+      opacity: var(--overlay-opacity);
+    }
+
+    .content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 32px 16px;
+      text-align: center;
+    }
+
+    .heading {
+      margin: 0;
+      font-size: var(--heading-m);
+      font-weight: 700;
+      line-height: 1.1;
+      color: inherit;
+    }
+
+    .text {
+      margin: 0;
+      font-size: 1em;
+      color: inherit;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 6px;
+      background: var(--button-bg);
+      color: var(--button-text);
+      font-weight: 600;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    @media (min-width: 750px) {
+      padding: var(--pt-d) var(--pr-d) var(--pb-d) var(--pl-d);
+
+      .frame {
+        min-height: var(--height-d);
+      }
+
+      .heading {
+        font-size: var(--heading-d);
+      }
+
+      .text {
+        font-size: 1.1em;
+      }
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Add a short description here." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+
+    { "type": "header", "content": "Size" },
+    { "type": "range", "id": "max_width", "label": "Content max width", "min": 900, "max": 1600, "step": 20, "unit": "px", "default": 1200 },
+    { "type": "range", "id": "height_desktop", "label": "Banner height desktop", "min": 200, "max": 900, "step": 10, "unit": "px", "default": 340 },
+    { "type": "range", "id": "height_mobile", "label": "Banner height mobile", "min": 200, "max": 700, "step": 10, "unit": "px", "default": 320 },
+    { "type": "range", "id": "heading_size_desktop", "label": "Heading size desktop", "min": 24, "max": 120, "step": 2, "unit": "px", "default": 56 },
+    { "type": "range", "id": "heading_size_mobile", "label": "Heading size mobile", "min": 20, "max": 80, "step": 2, "unit": "px", "default": 32 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "color", "id": "button_color", "label": "Button background", "default": "#ffffff" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#000000" },
+
+    { "type": "header", "content": "Desktop padding" },
+    { "type": "range", "id": "padding_top_desktop", "label": "Top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_right_desktop", "label": "Right", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom_desktop", "label": "Bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_left_desktop", "label": "Left", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+
+    { "type": "header", "content": "Mobile padding" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_right_mobile", "label": "Right", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_left_mobile", "label": "Left", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}
