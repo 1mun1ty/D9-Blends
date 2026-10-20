@@ -1,0 +1,451 @@
+{% assign featured = section.settings.featured_product %}
+{% assign end = featured.metafields.custom.timer_end.value | date: '%s' %}
+{% assign meta_keys = 'one,two' | split: ',' %}
+
+<section
+  id="shop-{{ section.id }}"
+  class="shop"
+  data-end="{{ end }}"
+  style="
+    --bg: {{ section.settings.background_color }};
+    --text: {{ section.settings.text_color }};
+    --card: {{ section.settings.card_color }};
+    --pt-d: {{ section.settings.padding_top_desktop }}px;
+    --pr-d: {{ section.settings.padding_right_desktop }}px;
+    --pb-d: {{ section.settings.padding_bottom_desktop }}px;
+    --pl-d: {{ section.settings.padding_left_desktop }}px;
+    --pt-m: {{ section.settings.padding_top_mobile }}px;
+    --pr-m: {{ section.settings.padding_right_mobile }}px;
+    --pb-m: {{ section.settings.padding_bottom_mobile }}px;
+    --pl-m: {{ section.settings.padding_left_mobile }}px;
+  "
+>
+  <h2 class="heading">{{ section.settings.heading }}</h2>
+
+  <div class="metas">
+    {% for block in section.blocks %}
+      {% assign collection = block.settings.collection %}
+      {% if collection != blank %}
+        <div class="meta-group" data-panel="{{ block.id }}" {% unless forloop.first %}hidden{% endunless %}>
+          {% for key in meta_keys %}
+            {% assign text_key = 'meta_' | append: key | append: '_text' %}
+            {% assign icon_key = 'meta_' | append: key | append: '_icon' %}
+            {% assign meta_text = collection.metafields.custom[text_key].value %}
+            {% assign meta_icon = collection.metafields.custom[icon_key].value %}
+            {% if meta_text != blank %}
+              <div class="meta">
+                {% if meta_icon != blank %}
+                  {{ meta_icon | image_url: width: 48 | image_tag: class: 'meta-icon' }}
+                {% endif %}
+                <span>{{ meta_text }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="slider">
+    <button class="arrow" data-arrow="-1" aria-label="Previous">&larr;</button>
+    <div class="tabs">
+      {% for block in section.blocks %}
+        {% assign collection = block.settings.collection %}
+        {% if collection != blank %}
+          <button class="tab {% if forloop.first %}active{% endif %}" data-tab="{{ block.id }}">
+            {% if collection.featured_image %}
+              {{ collection.featured_image | image_url: width: 48 | image_tag: class: 'tab-icon' }}
+            {% endif %}
+            <span>{{ collection.title }}</span>
+          </button>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <button class="arrow" data-arrow="1" aria-label="Next">&rarr;</button>
+  </div>
+
+  <div class="progress"><div class="progress-bar"></div></div>
+
+  <div class="layout">
+    <div class="left">
+      {% for block in section.blocks %}
+        {% assign collection = block.settings.collection %}
+        {% if collection != blank %}
+          <div data-panel="{{ block.id }}" {% unless forloop.first %}hidden{% endunless %}>
+            <div class="grid">
+              {% for product in collection.products limit: section.settings.products_count %}
+                <div class="card">
+                  {% if product.featured_image %}
+                    {{ product.featured_image | image_url: width: 400 | image_tag: class: 'image', alt: product.title }}
+                  {% endif %}
+                  <h3 class="title">{{ product.title }}</h3>
+                  <p class="price">{{ product.price | money }}</p>
+                  <a class="button" href="{{ product.url }}">{{ section.settings.shop_label }}</a>
+                </div>
+              {% endfor %}
+            </div>
+            <a class="more" href="{{ collection.url }}">{{ section.settings.more_label }}</a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="offer">
+      <p class="offer-title">{{ section.settings.offer_text }}</p>
+      {% if end != blank %}
+        <div class="timer">
+          <span>{{ section.settings.timer_label }}</span>
+          <b data-hours>00</b>:<b data-minutes>00</b>:<b data-seconds>00</b>
+        </div>
+      {% endif %}
+      <p class="offer-title">{{ section.settings.offer_text_two }}</p>
+      {% if featured != blank %}
+        <a href="{{ featured.url }}">
+          {{ featured.featured_image | image_url: width: 700 | image_tag: class: 'offer-image', alt: featured.title }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .shop {
+    background: var(--bg);
+    color: var(--text);
+    padding: var(--pt-m) var(--pr-m) var(--pb-m) var(--pl-m);
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .heading {
+      text-align: center;
+      margin: 0 0 12px;
+    }
+
+    .metas {
+      margin-bottom: 24px;
+    }
+
+    .meta-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8em;
+    }
+
+    .meta-icon {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .slider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .arrow {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--text);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .tabs {
+      display: flex;
+      flex: 1;
+      min-width: 0;
+      gap: 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-behavior: smooth;
+      padding: 4px 0;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 0 0 calc((100% - 36px) / 4);
+      padding: 10px 8px;
+      border: 1px solid var(--text);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      text-transform: uppercase;
+      cursor: pointer;
+
+      &.active {
+        background: var(--card);
+        color: var(--bg);
+      }
+    }
+
+    .tab-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .progress {
+      box-sizing: border-box;
+      max-width: 800px;
+      margin: 12px auto 32px;
+      padding: 0 52px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      width: 100%;
+      background: var(--text);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--bg);
+    }
+
+    .image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+    }
+
+    .title {
+      margin: 8px 0 0;
+      font-size: 1em;
+      font-weight: 400;
+      color: inherit;
+    }
+
+    .price {
+      margin: 4px 0 12px;
+      font-size: 0.8em;
+      font-weight: 600;
+      color: inherit;
+    }
+
+    .button {
+      margin-top: auto;
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      text-align: center;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-size: 0.8em;
+    }
+
+    .more {
+      display: table;
+      margin: 24px auto 0;
+      padding: 14px 24px;
+      border-radius: 6px;
+      background: var(--text);
+      color: var(--bg);
+      text-decoration: none;
+    }
+
+    .offer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--bg);
+      text-align: center;
+    }
+
+    .offer-title {
+      margin: 0;
+      font-size: 1.4em;
+      color: inherit;
+    }
+
+    .timer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8em;
+
+      b {
+        padding: 2px 6px;
+        border: 1px solid var(--bg);
+        border-radius: 4px;
+        font-weight: 400;
+      }
+    }
+
+    .offer-image {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (min-width: 750px) {
+      padding: var(--pt-d) var(--pr-d) var(--pb-d) var(--pl-d);
+
+      .layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (function () {
+    const root = document.getElementById('shop-{{ section.id }}');
+    const tabs = root.querySelectorAll('[data-tab]');
+    const panels = root.querySelectorAll('[data-panel]');
+    const list = root.querySelector('.tabs');
+    const bar = root.querySelector('.progress-bar');
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (item) {
+          item.classList.toggle('active', item === tab);
+        });
+        panels.forEach(function (panel) {
+          panel.hidden = panel.dataset.panel !== tab.dataset.tab;
+        });
+      });
+    });
+
+    root.querySelectorAll('[data-arrow]').forEach(function (arrow) {
+      arrow.addEventListener('click', function () {
+        list.scrollBy({ left: list.clientWidth * arrow.dataset.arrow });
+      });
+    });
+
+    function updateBar() {
+      bar.style.width = (list.clientWidth / list.scrollWidth) * 100 + '%';
+      bar.style.marginLeft = (list.scrollLeft / list.scrollWidth) * 100 + '%';
+    }
+
+    list.addEventListener('scroll', updateBar);
+    window.addEventListener('resize', updateBar);
+    updateBar();
+
+    const timer = root.querySelector('.timer');
+
+    if (timer) {
+      const end = Number(root.dataset.end) * 1000;
+      const hours = timer.querySelector('[data-hours]');
+      const minutes = timer.querySelector('[data-minutes]');
+      const seconds = timer.querySelector('[data-seconds]');
+
+      function pad(value) {
+        return String(value).padStart(2, '0');
+      }
+
+      function tick() {
+        const left = Math.max(0, Math.floor((end - Date.now()) / 1000));
+        hours.textContent = pad(Math.floor(left / 3600));
+        minutes.textContent = pad(Math.floor((left % 3600) / 60));
+        seconds.textContent = pad(left % 60);
+      }
+
+      tick();
+      setInterval(tick, 1000);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Shop By Categories",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop By Categories" },
+    { "type": "range", "id": "products_count", "label": "Products per tab", "min": 3, "max": 12, "step": 3, "default": 6 },
+    { "type": "text", "id": "shop_label", "label": "Product button label", "default": "Shop Now" },
+    { "type": "text", "id": "more_label", "label": "Collection button label", "default": "Load More Products" },
+
+    { "type": "header", "content": "Offer card" },
+    { "type": "text", "id": "offer_text", "label": "Top text", "default": "20% OFF First Subscription" },
+    { "type": "text", "id": "timer_label", "label": "Timer label", "default": "Hurry, Offer Ends In:" },
+    { "type": "text", "id": "offer_text_two", "label": "Bottom text", "default": "20% OFF On Super Candy" },
+    { "type": "product", "id": "featured_product", "label": "Featured product" },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#000000" },
+    { "type": "color", "id": "card_color", "label": "Card background", "default": "#1e1e1e" },
+
+    { "type": "header", "content": "Desktop padding" },
+    { "type": "range", "id": "padding_top_desktop", "label": "Top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 60 },
+    { "type": "range", "id": "padding_right_desktop", "label": "Right", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom_desktop", "label": "Bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 60 },
+    { "type": "range", "id": "padding_left_desktop", "label": "Left", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+
+    { "type": "header", "content": "Mobile padding" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_right_mobile", "label": "Right", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_left_mobile", "label": "Left", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 16 }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Collection tab",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop By Categories",
+      "blocks": [
+        { "type": "tab" },
+        { "type": "tab" },
+        { "type": "tab" },
+        { "type": "tab" }
+      ]
+    }
+  ]
+}
+{% endschema %}
