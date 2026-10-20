@@ -1,11 +1,20 @@
+{% assign start_alpha = section.settings.overlay_opacity | divided_by: 100.0 %}
+{% assign end_alpha = section.settings.overlay_opacity_end | divided_by: 100.0 %}
+{% assign start_color = section.settings.overlay_color | color_modify: 'alpha', start_alpha %}
+{% assign end_color = section.settings.overlay_color_end | color_modify: 'alpha', end_alpha %}
+
+{% if section.settings.overlay_style == 'solid' %}
+  {% assign end_color = start_color %}
+{% endif %}
+
 <section
   id="banner-{{ section.id }}"
   class="banner"
   style="
     --bg: {{ section.settings.background_color }};
     --text: {{ section.settings.text_color }};
-    --overlay-color: {{ section.settings.overlay_color }};
-    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --overlay: linear-gradient({{ section.settings.overlay_direction }}, {{ start_color }}, {{ end_color }});
+    --blur: {{ section.settings.overlay_blur }}px;
     --button-bg: {{ section.settings.button_color }};
     --button-text: {{ section.settings.button_text_color }};
     --max: {{ section.settings.max_width }}px;
@@ -66,7 +75,6 @@
       justify-content: center;
       min-height: var(--height-m);
       overflow: hidden;
-      background: var(--overlay-color);
     }
 
     .image {
@@ -81,8 +89,9 @@
     .overlay {
       position: absolute;
       inset: 0;
-      background: var(--overlay-color);
-      opacity: var(--overlay-opacity);
+      background: var(--overlay);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
     }
 
     .content {
@@ -150,6 +159,37 @@
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Now" },
     { "type": "url", "id": "button_link", "label": "Button link" },
 
+    { "type": "header", "content": "Overlay" },
+    {
+      "type": "select",
+      "id": "overlay_style",
+      "label": "Overlay style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "gradient", "label": "Gradient" }
+      ],
+      "default": "solid"
+    },
+    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "color", "id": "overlay_color_end", "label": "Gradient end color", "info": "Used when style is Gradient", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity_end", "label": "Gradient end opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 0 },
+    {
+      "type": "select",
+      "id": "overlay_direction",
+      "label": "Gradient direction",
+      "options": [
+        { "value": "to bottom", "label": "Top to bottom" },
+        { "value": "to top", "label": "Bottom to top" },
+        { "value": "to right", "label": "Left to right" },
+        { "value": "to left", "label": "Right to left" },
+        { "value": "to bottom right", "label": "Top left to bottom right" },
+        { "value": "to bottom left", "label": "Top right to bottom left" }
+      ],
+      "default": "to bottom"
+    },
+    { "type": "range", "id": "overlay_blur", "label": "Image blur", "min": 0, "max": 20, "step": 1, "unit": "px", "default": 0 },
+
     { "type": "header", "content": "Size" },
     { "type": "range", "id": "max_width", "label": "Content max width", "min": 900, "max": 1600, "step": 20, "unit": "px", "default": 1200 },
     { "type": "range", "id": "height_desktop", "label": "Banner height desktop", "min": 200, "max": 900, "step": 10, "unit": "px", "default": 340 },
@@ -160,8 +200,6 @@
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background_color", "label": "Section background", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
-    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
-    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
     { "type": "color", "id": "button_color", "label": "Button background", "default": "#ffffff" },
     { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#000000" },
 
